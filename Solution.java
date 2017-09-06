@@ -7,6 +7,7 @@ public class Solution
     {
         a=new int[i][j];
     }
+    //if you run in from main, you'll have to add the array elements from your console
     public static void main(String[] args) {
         Scanner s=new Scanner(System.in);
         int m=s.nextInt();
@@ -27,88 +28,98 @@ public class Solution
             o.print(o.a);
         else
         {
-            int[][] b=o.worker(o.a,k);
+            int[][] b=o.rotator(o.a,k);
             o.print(b);
         }
     }
-    int[][] worker(int a[][], int k)
+    //call this and pass in the array and the number of places by which you want to rotate each of its layers
+    //constraint: min(numberOfRows,numberOfColumns)%2=0
+    int[][] rotator(int a[][], int k) 
     {
-        int m=a.length;
-        int n=a[0].length;//this will fail if a is empty
-        Solution o=new Solution(m,n);
-        o.a=a;
-        int b[][]=new int[m][n];
-        int new_index[]=new int[2];
-        for(int i=0;i<m;i++)
+        if(a!=null && a[0].length!=0)
         {
-            for(int j=0;j<n;j++)
+            int m=a.length;
+            int n=a[0].length;//this will fail if a is empty
+            Solution o=new Solution(m,n);
+            o.a=a;
+            int b[][]=new int[m][n];
+            int new_index[]=new int[2];
+            for(int i=0;i<m;i++)
             {
-                int I=i,J=j;
-                int l=(m-i-1)<i?(m-i-1):i;
-                int l_1=(n-1-j)<j?(n-j-1):j;
-                l=l<l_1?l:l_1;
-                int k_actual=k%(2*(m+n-4*l-2));
-                new_index=new int [] {i,j,k_actual,l};
-                if(i==l && k_actual>0) //element is in the top row
+                for(int j=0;j<n;j++)
                 {
-                    if(k_actual>0)
-                        new_index = o.goLeft(I,J,k_actual,l);//going left
-                    if(new_index[2]>0)
-                        new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
-                    if(new_index[2]>0)
-                        new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
-                    if(new_index[2]>0)
-                        new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
-                    if(new_index[2]>0)
-                        new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
-                }
+                    int I=i,J=j;
+                    int l=(m-i-1)<i?(m-i-1):i;
+                    int l_1=(n-1-j)<j?(n-j-1):j;
+                    l=l<l_1?l:l_1;
+                    int k_actual=k%(2*(m+n-4*l-2));
+                    new_index=new int [] {i,j,k_actual,l};
+                    if(i==l && k_actual>0) //element is in the top row
+                    {
+                        if(k_actual>0)
+                            new_index = o.goLeft(I,J,k_actual,l);//going left
+                        if(new_index[2]>0)
+                            new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
+                        if(new_index[2]>0)
+                            new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
+                        if(new_index[2]>0)
+                            new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
+                        if(new_index[2]>0)
+                            new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
+                    }
 
-                else if(j==l && k_actual>0) //element is in the left column
-                {
-                   if(new_index[2]>0)
-                        new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
-                    if(new_index[2]>0)
-                        new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
-                    if(new_index[2]>0)
-                        new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
-                    if(new_index[2]>0)
-                        new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
-                    if(new_index[2]>0)
-                        new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down                        
-                }
+                    else if(j==l && k_actual>0) //element is in the left column
+                    {
+                       if(new_index[2]>0)
+                            new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
+                        if(new_index[2]>0)
+                            new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
+                        if(new_index[2]>0)
+                            new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
+                        if(new_index[2]>0)
+                            new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
+                        if(new_index[2]>0)
+                            new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down                        
+                    }
 
-                else if(i==m-1-l && k_actual>0)//element is in the bottom row
-                {
-                    if(new_index[2]>0)
-                        new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
-                    if(new_index[2]>0)
-                        new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
-                    if(new_index[2]>0)
-                        new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
-                    if(new_index[2]>0)
-                        new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
-                    if(new_index[2]>0)
-                        new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
+                    else if(i==m-1-l && k_actual>0)//element is in the bottom row
+                    {
+                        if(new_index[2]>0)
+                            new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
+                        if(new_index[2]>0)
+                            new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
+                        if(new_index[2]>0)
+                            new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
+                        if(new_index[2]>0)
+                            new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
+                        if(new_index[2]>0)
+                            new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
+                    }
+                    else if(j==n-1-l && k_actual>0)//element is in the right column
+                    {
+                        if(new_index[2]>0)
+                            new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
+                        if(new_index[2]>0)
+                            new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
+                        if(new_index[2]>0)
+                            new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
+                        if(new_index[2]>0)
+                            new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
+                        if(new_index[2]>0)
+                            new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
+                    }
+                    I=new_index[0];
+                    J=new_index[1];
+                    b[I][J]=o.a[i][j];
                 }
-                else if(j==n-1-l && k_actual>0)//element is in the right column
-                {
-                    if(new_index[2]>0)
-                        new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
-                    if(new_index[2]>0)
-                        new_index=o.goLeft(new_index[0],new_index[1],new_index[2],l);//going left
-                    if(new_index[2]>0)
-                        new_index= o.goDown(new_index[0],new_index[1],new_index[2],l);//going down
-                    if(new_index[2]>0)
-                        new_index=o.goRight(new_index[0],new_index[1],new_index[2],l);//going right
-                    if(new_index[2]>0)
-                        new_index=o.goUp(new_index[0],new_index[1],new_index[2],l);//going up
-                }
-                I=new_index[0];
-                J=new_index[1];
-                b[I][J]=o.a[i][j];
             }
+            return b;
         }
-        return b;
+        else
+        {
+            System.out.println("Empty Array");
+            return null;
+        }
     }
     int[] goLeft(int i,int j, int k, int l)
     {

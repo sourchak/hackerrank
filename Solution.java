@@ -7,7 +7,7 @@ public class Solution
     {
         a=new int[i][j];
     }
-    //if you run in from main, you'll have to add the array elements from your console
+    //if you run Solution from main, you'll have to add the array elements from your console
     public static void main(String[] args) {
         Scanner s=new Scanner(System.in);
         int m=s.nextInt();
